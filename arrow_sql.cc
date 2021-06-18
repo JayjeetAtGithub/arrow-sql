@@ -153,6 +153,10 @@ int main(int argc, char** argv) {
 
     auto t1 = high_resolution_clock::now();    
     auto table = QueryDataset(dataset);
+    auto t2 = high_resolution_clock::now();
+    duration<double, std::milli> ms_double_1 = t2 - t1;
+    std::cout << ms_double_1.count() << "ms\n";
+
     auto table_reader = std::make_shared<arrow::TableBatchReader>(*table);
     SimpleFactory factory {table_reader};
     duckdb::DuckDB db;
@@ -164,9 +168,9 @@ int main(int argc, char** argv) {
     auto relation = conn.TableFunction("arrow_scan", params)->CreateView("dataset", true, true);
 
     auto query_result = relation->Query(query);    
-    auto t2 = high_resolution_clock::now();
-    duration<double, std::milli> ms_double = t2 - t1;
-    std::cout << ms_double.count() << "ms\n";
+    auto t3 = high_resolution_clock::now();
+    duration<double, std::milli> ms_double_2 = t3 - t1;
+    std::cout << ms_double_2.count() << "ms\n";
 
     std::cout << query_result->ToString() << "\n";
     
